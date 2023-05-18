@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@mantine/core": "^6.0.10",
+    "@tabler/icons-react": "^2.19.0",
+    "cities.json": "^1.1.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@tabler/icons": "^2.19.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
