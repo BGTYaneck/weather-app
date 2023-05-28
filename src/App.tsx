@@ -62,7 +62,7 @@ const App = () => {
 
   const removeFromFavourites = (cityName: string) => {
     let newArr = [...favourites];
-    newArr = newArr.filter((city) => city !== cityName);
+    newArr = newArr.filter((city) => city != cityName);
     setFavourites(newArr);
   };
 
@@ -171,7 +171,14 @@ const App = () => {
               </p>
             ) : (
               favourites.map((city, i) => {
-                return <Fav key={i} cityName={city} />;
+                return (
+                  <Fav
+                    key={i}
+                    cityName={city}
+                    scale={isCelcius}
+                    list={favourites}
+                  />
+                );
               })
             )}
           </Paper>

@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 type Props = {
+  list: string[];
   cityName: string;
+  scale: boolean;
 };
 
 const Fav = (props: Props) => {
@@ -18,7 +20,8 @@ const Fav = (props: Props) => {
       .then((response) => {
         setWeatherData(response.data);
       });
-  }, []);
+    console.log(weatherData);
+  }, [props.list]);
 
   return (
     <div className="w-1/6 border p-2 hover:bg-gray-100 hover:cursor-pointer">
@@ -40,7 +43,11 @@ const Fav = (props: Props) => {
               km/h
             </p>
           </div>
-          <div className="text-4xl mt-4"></div>
+          <div className="text-4xl mt-4">
+            {props.scale
+              ? weatherData.current.temp_c + "°C"
+              : weatherData.current.temp_f + "°F"}
+          </div>
         </div>
       ) : (
         "Loading..."
