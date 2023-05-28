@@ -6,6 +6,7 @@ import {
   IconStarFilled,
 } from "@tabler/icons-react";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -16,14 +17,15 @@ import axios from "axios";
 import Fav from "./components/Fav";
 
 const App = () => {
-  const [weatherData, setWeatherData] = React.useState<any>(null);
-  const [cityName, setCityName] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isError, setIsError] = React.useState(false);
-  const [isCelcius, setIsCelcius] = React.useState(true);
   const [favourites, setFavourites] = React.useState<string[]>(
     JSON.parse(localStorage.getItem("weather")!) ?? []
   );
+  const [weatherData, setWeatherData] = React.useState<any>(null);
+  const [isCelcius, setIsCelcius] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [cityName, setCityName] = React.useState(null);
+  const [isError, setIsError] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     localStorage.setItem("weather", JSON.stringify(favourites));
@@ -50,14 +52,22 @@ const App = () => {
 
   const addToFavourites = (cityName: string) => {
     let newArr = [...favourites];
-    newArr.push(cityName);
-    setFavourites(newArr);
+    if (newArr.length == 6) {
+      setOpen(true);
+    } else {
+      newArr.push(cityName);
+      setFavourites(newArr);
+    }
   };
 
   const removeFromFavourites = (cityName: string) => {
     let newArr = [...favourites];
     newArr = newArr.filter((city) => city !== cityName);
     setFavourites(newArr);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   let options = {};
@@ -146,14 +156,24 @@ const App = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }} className="p-8">
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message="You can only add 6 favourites!"
+      />
       <Grid container spacing={2}>
         <Grid item xl={12} md={12} xs={12}>
-          <Paper className="min-h-[9rem] flex justify-center items-center">
-            {favourites.length == 0
-              ? "Your favourited cities will appear here!"
-              : favourites.map((city) => {
-                  return <Fav city={city} />;
-                })}
+          <Paper className="min-h-[9rem] flex flex-row flex-wrap overflow-hidden">
+            {favourites.length == 0 ? (
+              <p className="w-full h-full opacity-50 text-center mt-2">
+                Your favourited cities will appear here!
+              </p>
+            ) : (
+              favourites.map((city, i) => {
+                return <Fav key={i} cityName={city} />;
+              })
+            )}
           </Paper>
         </Grid>
         <Grid item xl={3} md={4} xs={12}>
