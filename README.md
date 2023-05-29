@@ -1,5 +1,5 @@
 # weather-app
-A weather app using React & Material UI
+A weather app using React, echerts & Material UI
 
 Features:
 * Reading weather data from https://www.weatherapi.com/
