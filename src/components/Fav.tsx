@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import Grid from "@mui/material/Grid";
 
 type Props = {
   list: string[];
   cityName: string;
   scale: boolean;
+  setParentData: () => void;
 };
 
 const Fav = (props: Props) => {
@@ -24,7 +26,14 @@ const Fav = (props: Props) => {
   }, [props.list]);
 
   return (
-    <div className="w-1/6 border p-2 hover:bg-gray-100 hover:cursor-pointer">
+    <Grid
+      item
+      xl={2}
+      md={4}
+      xs={6}
+      className="w-1/6 border p-2 hover:bg-gray-100 hover:cursor-pointer"
+      onClick={props.setParentData}
+    >
       {weatherData ? (
         <div>
           <div className="flex">
@@ -38,8 +47,9 @@ const Fav = (props: Props) => {
           </div>
           <div className="opacity-50 text-xs">
             <p>
-              P: {weatherData.current.pressure_mb}hPa H:{" "}
-              {weatherData.current.humidity}% W: {weatherData.current.wind_kph}
+              P: {weatherData.current.pressure_mb}hPa{" | "} H:
+              {weatherData.current.humidity}% {" | "}W:{" "}
+              {weatherData.current.wind_kph}
               km/h
             </p>
           </div>
@@ -52,7 +62,7 @@ const Fav = (props: Props) => {
       ) : (
         "Loading..."
       )}
-    </div>
+    </Grid>
   );
 };
 

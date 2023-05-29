@@ -31,13 +31,13 @@ const App = () => {
     localStorage.setItem("weather", JSON.stringify(favourites));
   }, [favourites]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (city: string) => {
     setIsError(false);
     setIsLoading(true);
     axios
       .get(
         "http://api.weatherapi.com/v1/forecast.json?key=10b2840a301f4d74bb071309232305&q=" +
-          cityName +
+          city +
           "&days=7&aqi=yes&alerts=yes"
       )
       .then((response) => {
@@ -139,7 +139,7 @@ const App = () => {
       },
       yAxis: {
         type: "value",
-        name: scale,
+        name: "Weather forecast (" + scale + ")",
       },
       series: [
         {
@@ -170,16 +170,21 @@ const App = () => {
                 Your favourited cities will appear here!
               </p>
             ) : (
-              favourites.map((city, i) => {
-                return (
-                  <Fav
-                    key={i}
-                    cityName={city}
-                    scale={isCelcius}
-                    list={favourites}
-                  />
-                );
-              })
+              <Grid container spacing={0}>
+                {favourites.map((city, i) => {
+                  return (
+                    <Fav
+                      key={i}
+                      cityName={city}
+                      scale={isCelcius}
+                      list={favourites}
+                      setParentData={() => {
+                        handleSubmit(city);
+                      }}
+                    />
+                  );
+                })}
+              </Grid>
             )}
           </Paper>
         </Grid>
@@ -196,7 +201,7 @@ const App = () => {
               <Button
                 variant="contained"
                 className="h-14"
-                onClick={() => handleSubmit()}
+                onClick={() => handleSubmit(cityName!)}
               >
                 <IconWorldDownload />
               </Button>
